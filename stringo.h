@@ -3,10 +3,14 @@
 
 #include <stddef.h>
 
-typedef struct String {
+#include "errors.h"
+
+typedef struct Stringo {
     char   *data;
     size_t length;
     size_t capacity;
-} String;
+} Stringo;
+
+StringoError stringo_get_input(Stringo *input);
 
 #endif

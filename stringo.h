@@ -11,6 +11,24 @@ typedef struct Stringo {
     size_t capacity;
 } Stringo;
 
-StringoError stringo_get_input(Stringo *input);
+typedef struct StringoReturnResult {
+    Stringo *string;
+    StringoError status;
+} StringoReturnResult;
+
+StringoReturnResult stringo_initialize();
+StringoReturnResult stringo_get_input();
+
+static inline char *stringo_data(Stringo *stringo) {
+    return stringo->data;
+}
+
+static inline size_t stringo_length(Stringo *stringo) {
+    return stringo->length;
+}
+
+static inline size_t stringo_capacity(Stringo *stringo) {
+    return stringo->capacity;
+}
 
 #endif

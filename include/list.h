@@ -39,11 +39,11 @@ static inline Node *list_tail(List *list) {
 }
 
 static inline ListError list_is_head(Node *node) {
-    return node->next == NULL ? LE_OK : LE_FALSE;
+    return node->next == NULL ? LE_OK : LE_GENERIC_FAIL;
 }
 
 static inline ListError list_is_tail(Node *node) {
-    return node->prev == NULL ? LE_OK : LE_FALSE;
+    return node->prev == NULL ? LE_OK : LE_GENERIC_FAIL;
 }
 
 static inline void *list_data(Node *node) {

@@ -1,0 +1,141 @@
+==316474== Memcheck, a memory error detector
+==316474== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==316474== Using Valgrind-3.25.1-4441567fbe-20250520 and LibVEX; rerun with -h for copyright info
+==316474== Command: ./build/nf
+==316474== Parent PID: 219793
+==316474== 
+--316474-- 
+--316474-- Valgrind options:
+--316474--    --leak-check=full
+--316474--    --show-leak-kinds=all
+--316474--    --track-origins=yes
+--316474--    --verbose
+--316474--    --log-file=valgrind-out.txt
+--316474-- Contents of /proc/version:
+--316474--   Linux version 7.2.6-arch2-1 (linux@archlinux) (gcc (GCC) 16.2.1 20260810, GNU ld (GNU Binutils) 2.47) #1 SMP PREEMPT_DYNAMIC Mon, 14 Sep 2026 22:41:30 +0000
+--316474-- 
+--316474-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
+--316474-- Page sizes: currently 4096, max supported 4096
+--316474-- Valgrind library directory: /usr/lib/valgrind
+--316474-- Reading syms from /home/thifariafeliz/Faculdade/PIV/Estruturas/notafiscal/build/nf
+--316474-- Reading syms from /usr/lib/ld-linux-x86-64.so.2
+==316474== Downloading debug info for /usr/lib/ld-linux-x86-64.so.2...
+--316474--   Considering /home/thifariafeliz/.cache/debuginfod_client/1e794eb14f4bccf6186bf8d9aa2018e8963ea668/debuginfo ..
+--316474--   .. CRC is valid
+==316474== Successfully downloaded debug file for /usr/lib/ld-linux-x86-64.so.2
+--316474-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--316474--    object doesn't have a dynamic symbol table
+--316474-- Scheduler: using generic scheduler lock implementation.
+--316474-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==316474== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-316474-by-thifariafeliz-on-???
+==316474== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-316474-by-thifariafeliz-on-???
+==316474== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-316474-by-thifariafeliz-on-???
+==316474== 
+==316474== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==316474== don't want to do, unless you know exactly what you're doing,
+==316474== or are doing some strange experiment):
+==316474==   /usr/lib/valgrind/../../bin/vgdb --pid=316474 ...command...
+==316474== 
+==316474== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==316474==   /path/to/gdb ./build/nf
+==316474== and then give GDB the following command
+==316474==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=316474
+==316474== --pid is optional if only one valgrind process is running
+==316474== 
+==316474== Downloading debug info for /usr/lib/valgrind/memcheck-amd64-linux...
+--316474--   Considering /home/thifariafeliz/.cache/debuginfod_client/5e87bc66e444b72103af0794f8b9fe22c489d75a/debuginfo ..
+--316474--   .. CRC is valid
+==316474== Successfully downloaded debug file for /usr/lib/valgrind/memcheck-amd64-linux
+--316474-- Warning: cross-CU LIMITATION: some inlined fn names
+--316474-- might be shown as UnknownInlinedFun
+--316474-- REDIR: 0x403db50 (ld-linux-x86-64.so.2:strlen) redirected to 0x5824a314 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--316474-- REDIR: 0x403c500 (ld-linux-x86-64.so.2:strcmp) redirected to 0x5824a32e (vgPlain_amd64_linux_REDIR_FOR_strcmp)
+--316474-- REDIR: 0x403c2d0 (ld-linux-x86-64.so.2:index) redirected to 0x5824a367 (vgPlain_amd64_linux_REDIR_FOR_index)
+--316474-- REDIR: 0x403b660 (ld-linux-x86-64.so.2:bcmp) redirected to 0x5824a349 (vgPlain_amd64_linux_REDIR_FOR_memcmp)
+--316474-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--316474-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+==316474== WARNING: new redirection conflicts with existing -- ignoring it
+--316474--     old: 0x0403c500 (strcmp              ) R-> (0000.0) 0x5824a32e vgPlain_amd64_linux_REDIR_FOR_strcmp
+==316474== Downloading debug info for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so...
+--316474--   Considering /home/thifariafeliz/.cache/debuginfod_client/02ab7354309756e4a9efa9a446314747406ab8df/debuginfo ..
+--316474--   .. CRC is valid
+==316474== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--316474--     new: 0x0403c500 (strcmp              ) R-> (2016.0) 0x048a73f0 strcmp
+==316474== WARNING: new redirection conflicts with existing -- ignoring it
+--316474--     old: 0x0403db50 (strlen              ) R-> (0000.0) 0x5824a314 vgPlain_amd64_linux_REDIR_FOR_strlen
+--316474--     new: 0x0403db50 (strlen              ) R-> (2007.0) 0x048a5f80 strlen
+--316474-- REDIR: 0x403b930 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x48abb60 (mempcpy)
+--316474-- Reading syms from /usr/lib/libasan.so.8.0.0
+--316474-- Reading syms from /usr/lib/libubsan.so.1.0.0
+--316474-- Reading syms from /usr/lib/libc.so.6
+==316474== Downloading debug info for /usr/lib/libc.so.6...
+--316474--   Considering /home/thifariafeliz/.cache/debuginfod_client/503200d7fda94a5dc6058d7e0694e5d1dcb2e372/debuginfo ..
+--316474--   .. CRC is valid
+==316474== Successfully downloaded debug file for /usr/lib/libc.so.6
+--316474-- Reading syms from /usr/lib/libstdc++.so.6.0.36
+--316474-- Reading syms from /usr/lib/libm.so.6
+--316474-- Reading syms from /usr/lib/libgcc_s.so.1
+--316474-- REDIR: 0x403dcf0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x48a6b50 (strncmp)
+==316474== Downloading debug info for /usr/lib/valgrind/vgpreload_core-amd64-linux.so...
+--316474--   Considering /home/thifariafeliz/.cache/debuginfod_client/46881a19cff7d9b8d10889522ac76799f21891ab/debuginfo ..
+--316474--   .. CRC is valid
+==316474== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--316474-- REDIR: 0x5699e60 (libc.so.6:strncasecmp) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5697000 (libc.so.6:mempcpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56ad870 (libc.so.6:wcpncpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5697380 (libc.so.6:stpcpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5717990 (libc.so.6:__memmove_chk) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56bc120 (libc.so.6:wmemcmp) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5698010 (libc.so.6:strcat) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5696600 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56af780 (libc.so.6:wcsncpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5717880 (libc.so.6:__memcpy_chk) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+==316474== WARNING: new redirection conflicts with existing -- ignoring it
+--316474--     old: 0x057603d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x048ab540 __memmove_chk
+--316474--     new: 0x057603d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x048abc70 __memcpy_chk
+--316474-- REDIR: 0x56aeec0 (libc.so.6:wcslen) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56af7e0 (libc.so.6:wcsnlen) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x569a180 (libc.so.6:strnlen) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x569a210 (libc.so.6:strpbrk) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56981a0 (libc.so.6:strcmp) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5697190 (libc.so.6:memset) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5697110 (libc.so.6:memrchr) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56adc50 (libc.so.6:wcschr) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5698080 (libc.so.6:index) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x569a240 (libc.so.6:rindex) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56adcf0 (libc.so.6:wcscmp) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56973f0 (libc.so.6:stpncpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56bc0a0 (libc.so.6:wmemchr) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x569a010 (libc.so.6:strncmp) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5697460 (libc.so.6:strcasecmp) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5699330 (libc.so.6:strcspn) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56aeca0 (libc.so.6:wcscpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5699f00 (libc.so.6:strncasecmp_l) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5698110 (libc.so.6:strchrnul) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5696510 (libc.so.6:bcmp) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x56992c0 (libc.so.6:strcpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5697500 (libc.so.6:strcasecmp_l) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5699dd0 (libc.so.6:strlen) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x569a0b0 (libc.so.6:strncpy) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x5696ef0 (libc.so.6:memmove) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+==316474== Preferring higher priority redirection:
+--316474--     old: 0x05760400 (__memcpy_avx_unalign) R-> (2018.0) 0x048a8a90 __memcpy_avx_unaligned_erms
+--316474--     new: 0x05760400 (__memcpy_avx_unalign) R-> (2018.1) 0x048aa830 memmove
+--316474-- REDIR: 0x5696480 (libc.so.6:memchr) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+--316474-- REDIR: 0x569a470 (libc.so.6:strspn) redirected to 0x48911a0 (_vgnU_ifunc_wrapper)
+==316474== WARNING: new redirection conflicts with existing -- ignoring it
+--316474--     old: 0x057603d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x048ab540 __memmove_chk
+--316474--     new: 0x057603d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x048abc70 __memcpy_chk
+==316474== Downloading debug info for /usr/lib/libasan.so.8.0.0...
+--316474--   Considering /home/thifariafeliz/.cache/debuginfod_client/b8a4241051a1621937fdc46e867ba7ecb56d96ea/debuginfo ..
+--316474--   .. CRC is valid
+==316474== Successfully downloaded debug file for /usr/lib/libasan.so.8.0.0
+--316474-- REDIR: 0x49ddd70 (libasan.so.8:free) redirected to 0x489f980 (free)
+==316474== 
+==316474== HEAP SUMMARY:
+==316474==     in use at exit: 0 bytes in 0 blocks
+==316474==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==316474== 
+==316474== All heap blocks were freed -- no leaks are possible
+==316474== 
+==316474== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

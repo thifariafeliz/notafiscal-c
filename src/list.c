@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stddef.h>
 
-#include "list.h"
-#include "errors.h"
+#include "../include/list.h"
+#include "../include/errors.h"
 
 ListError list_init(List* list, void (*destroy)(void *data)) {
     if (list == NULL) {
@@ -49,10 +49,13 @@ ListError list_remove(List *list, Node *node, void **data) {
 
     if (list_is_head(node) == LE_OK) {
         list->head = node->next;
-        node->next->prev = NULL;
+        // node->next->prev = NULL;
 
         if (list_head(list) == NULL) {
             list->tail = NULL;
+        }
+        else {
+            node->next->prev = NULL;
         }
     }
     else {
@@ -67,12 +70,19 @@ ListError list_remove(List *list, Node *node, void **data) {
     }
 
     free(node);
+
+    list->size--;
+
     return LE_OK;
 }
 
 ListError list_ins_next(List *list, Node *node, void *data) {
-    if (list == NULL || node == NULL) {
-        return LE_ARG_IS_NULL;        
+    if (list == NULL) {
+        return LE_ARG_IS_NULL;
+    }
+
+    if (list_size(list) != 0 && node == NULL) {
+        return LE_GENERIC_FAIL;
     }
 
     Node *new_node = malloc(sizeof(*new_node));
@@ -85,14 +95,14 @@ ListError list_ins_next(List *list, Node *node, void *data) {
     if (list_size(list) == 0) {
         list->head = new_node;
         list->tail = new_node;
-        new_node->next = NULL;
-        new_node->prev = NULL;
+        list->head->prev = NULL;
+        list->tail->next = NULL;
     }
     else {
         new_node->next = node->next;
         new_node->prev = node;
 
-        if (list_next(new_node) == NULL) {
+        if (list_next(node) == NULL) {
             list->tail = new_node;
         }
         else {
@@ -108,8 +118,12 @@ ListError list_ins_next(List *list, Node *node, void *data) {
 }
 
 ListError list_ins_prev(List *list, Node *node, void *data) {
-    if (list == NULL || node == NULL) {
+    if (list == NULL) {
         return LE_ARG_IS_NULL;
+    }
+
+    if (list_size(list) != 0 && node == NULL) {
+        return LE_GENERIC_FAIL;
     }
 
     Node *new_node = malloc(sizeof(*new_node));
@@ -119,14 +133,14 @@ ListError list_ins_prev(List *list, Node *node, void *data) {
     if (list_size(list) == 0) {
         list->head = new_node;
         list->tail = new_node;
-        new_node->next = NULL;
-        new_node->prev = NULL;
+        list->head->prev = NULL;
+        list->tail->next = NULL;
     }
     else {
         new_node->next = node;
         new_node->prev = node->prev;
 
-        if (list_prev(new_node) == NULL) {
+        if (list_prev(node) == NULL) {
             list->head = new_node;
         }
         else {

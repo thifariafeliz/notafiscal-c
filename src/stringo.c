@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <strings.h>
 
-#include "stringo.h"
+#include "../include/stringo.h"
 
 StringoReturnResult stringo_initialize() {
     Stringo *stringo = malloc(sizeof(*stringo));
@@ -16,6 +16,7 @@ StringoReturnResult stringo_initialize() {
     stringo->data = malloc(stringo->capacity);
     if (stringo->data == NULL) {
         stringo->capacity = 0;
+        free(stringo);
         return (StringoReturnResult){.string = NULL, .status = SE_FAILED_MALLOC};
     }
 
@@ -33,7 +34,7 @@ StringoReturnResult stringo_get_input() {
     while (1) {
         c = getchar();
 
-        if (c == EOF) { 
+        if (c == EOF) {
             if (input.string->length == 0) {
                 free(input.string->data);
                 free(input.string);
@@ -55,14 +56,14 @@ StringoReturnResult stringo_get_input() {
                 free(input.string);
                 return (StringoReturnResult){.string = NULL, .status = SE_FAILED_MALLOC};
             }
-            
+
             input.string->data = temp;
         }
-        
+
         input.string->data[input.string->length++] = (char) c;
     }
 
-    input.string->data[stringo_length(input.string)] = '\0'; 
+    input.string->data[stringo_length(input.string)] = '\0';
 
     return (StringoReturnResult){.string = input.string, .status = SE_OK};
 }
@@ -77,5 +78,52 @@ StringoError stringo_trim_capacity(Stringo *string) {
         return SE_FAILED_MALLOC;
     }
 
+    return SE_OK;
+}
+
+void stringo_destroy(Stringo *str) {
+    if (str == NULL) {
+        return;
+    }
+
+    if (str->data == NULL) {
+        str->length = 0;
+        str->capacity = 0;
+        free(str);
+        str = NULL;
+        return;
+    }
+
+    free(str->data);
+    str->length = 0;
+    str->capacity = 0;
+    str->data = NULL;
+
+    free(str);
+    str = NULL;
+
+    return;
+}
+
+/// Esta função exige um ponteiro para um ponteiro, pois precisa mudar o endereco
+/// para o qual o ponteiro str está apontando.
+StringoError ler_campo(char *prompt, Stringo **str) {
+    if (prompt == NULL) {
+        return SE_ARG_IS_NULL;
+    }
+
+    if (str != NULL) {
+        stringo_destroy(*str);
+    }
+
+    printf("%s\n", prompt);
+    StringoReturnResult input = stringo_get_input();
+
+    if (input.status != SE_OK) {
+        printf("Não foi possível pegar entrada do usuário.\n");
+        return input.status;
+    }
+
+    *str = input.string;
     return SE_OK;
 }

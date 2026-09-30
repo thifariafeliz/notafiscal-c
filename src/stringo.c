@@ -4,10 +4,10 @@
 
 #include "../include/stringo.h"
 
-StringoReturnResult stringo_initialize() {
+StringoResult stringo_initialize() {
     Stringo *stringo = malloc(sizeof(*stringo));
     if (stringo == NULL) {
-        return (StringoReturnResult){.string = NULL, .status = SE_FAILED_MALLOC};
+        return (StringoResult){.value = NULL, .status = NF_ERR_NO_MEMORY_AVAILABLE};
     }
 
     stringo->length = 0;
@@ -17,16 +17,16 @@ StringoReturnResult stringo_initialize() {
     if (stringo->data == NULL) {
         stringo->capacity = 0;
         free(stringo);
-        return (StringoReturnResult){.string = NULL, .status = SE_FAILED_MALLOC};
+        return (StringoResult){.value = NULL, .status = NF_ERR_NO_MEMORY_AVAILABLE};
     }
 
-    return (StringoReturnResult){.string = stringo, .status = SE_OK};
+    return (StringoResult){.value = stringo, .status = NF_ERR_OK};
 }
 
-StringoReturnResult stringo_get_input() {
-    StringoReturnResult input = stringo_initialize();
-    if (input.status != SE_OK) {
-        return (StringoReturnResult){.string = NULL, .status = SE_FAILED_MALLOC};
+StringoResult stringo_get_input() {
+    StringoResult input = stringo_initialize();
+    if (input.status != NF_ERR_OK) {
+        return (StringoResult){.value = NULL, .status = input.status};
     }
 
     int c;
@@ -35,10 +35,10 @@ StringoReturnResult stringo_get_input() {
         c = getchar();
 
         if (c == EOF) {
-            if (input.string->length == 0) {
-                free(input.string->data);
-                free(input.string);
-                return (StringoReturnResult){.string = NULL, .status = SE_EARLY_EOF};
+            if (input.value->length == 0) {
+                free(input.value->data);
+                free(input.value);
+                return (StringoResult){.value = NULL, .status = NF_ERR_IO};
             }
             break;
         }
@@ -47,39 +47,39 @@ StringoReturnResult stringo_get_input() {
             break;
         }
 
-        if (stringo_length(input.string) + 1 >= stringo_capacity(input.string)) {
-            input.string->capacity *= 2;
+        if (stringo_length(input.value) + 1 >= stringo_capacity(input.value)) {
+            input.value->capacity *= 2;
 
-            char *temp = realloc(input.string->data, input.string->capacity);
+            char *temp = realloc(input.value->data, input.value->capacity);
             if (temp == NULL) {
-                free(input.string->data);
-                free(input.string);
-                return (StringoReturnResult){.string = NULL, .status = SE_FAILED_MALLOC};
+                free(input.value->data);
+                free(input.value);
+                return (StringoResult){.value = NULL, .status = NF_ERR_NO_MEMORY_AVAILABLE};
             }
 
-            input.string->data = temp;
+            input.value->data = temp;
         }
 
-        input.string->data[input.string->length++] = (char) c;
+        input.value->data[input.value->length++] = (char) c;
     }
 
-    input.string->data[stringo_length(input.string)] = '\0';
+    input.value->data[stringo_length(input.value)] = '\0';
 
-    return (StringoReturnResult){.string = input.string, .status = SE_OK};
+    return (StringoResult){.value = input.value, .status = NF_ERR_OK};
 }
 
-StringoError stringo_trim_capacity(Stringo *string) {
-    if (string == NULL || string->data == NULL) {
-        return SE_ARG_IS_NULL;
-    }
+// StringoError stringo_trim_capacity(Stringo *string) {
+//     if (string == NULL || string->data == NULL) {
+//         return SE_ARG_IS_NULL;
+//     }
 
-    char *temp = realloc(stringo_data(string), stringo_length(string) + 1);
-    if (temp == NULL) {
-        return SE_FAILED_MALLOC;
-    }
+//     char *temp = realloc(stringo_data(string), stringo_length(string) + 1);
+//     if (temp == NULL) {
+//         return SE_FAILED_MALLOC;
+//     }
 
-    return SE_OK;
-}
+//     return SE_OK;
+// }
 
 void stringo_destroy(Stringo *str) {
     if (str == NULL) {

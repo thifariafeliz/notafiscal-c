@@ -3,34 +3,29 @@
 
 #include <stddef.h>
 
-#include "list.h"
 #include "stringo.h"
 
-typedef struct DadosCliente {
+typedef struct List List;
+
+typedef struct Cliente {
     Stringo *nome;
     Stringo *endereco;
     Stringo *cpf;
     Stringo *fone;
-} DadosCliente;
+} Cliente;
 
-typedef struct DadosItem {
+typedef struct Item {
     Stringo *descricao;
 
     int codigo;
     int quantidade;
     int preco_total;
     int preco_unitario;
-} DadosItem;
+} Item;
 
 typedef struct NotaFiscal {
-    List *item;  // List *item receberá elementos do tipo DadosItem
-    DadosCliente *cliente;
+    List *itens;  // List *item receberá elementos do tipo DadosItem
+    Cliente *cliente;
 } NotaFiscal;
-
-typedef struct Caixa {
-    List *notas_fiscais;  // List *notas_ficais receberá elementos do tipo NotaFiscal
-} Caixa;
-
-void imprimir_notas_fiscais(Caixa *caixa);
 
 #endif

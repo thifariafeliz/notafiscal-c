@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-#include "errors.h"
+#include "returnables.h"
 
 typedef struct Stringo {
     char   *data;
@@ -11,13 +11,8 @@ typedef struct Stringo {
     size_t capacity;
 } Stringo;
 
-typedef struct StringoReturnResult {
-    Stringo *string;
-    StringoError status;
-} StringoReturnResult;
-
-StringoReturnResult stringo_initialize();
-StringoReturnResult stringo_get_input();
+StringoResult stringo_initialize();
+StringoResult stringo_get_input();
 void stringo_destroy(Stringo *str);
 
 static inline char *stringo_data(Stringo *stringo) {

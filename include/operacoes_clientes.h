@@ -2,16 +2,12 @@
 #define OPERACOESCLIENTES_H
 
 #include "notafiscal.h"
-#include "errors.h"
+#include "returnables.h"
 
-typedef struct DadosClienteResult {
-    DadosCliente *cliente;
-    StringoError status;
-} DadosClienteResult;
-
-int imprimir_clientes(Caixa *caixa);
-DadosClienteResult pega_dados_cliente(void);
-AddItemClienteResult adicionar_item_cliente(Caixa *caixa);
-NotaFiscal *procura_cliente(Caixa *caixa, Stringo *cpf);
+void cliente_destroy(void *data);
+ClienteResult cliente_pegar_dados(void);
+NFError cliente_imprimir(NotaFiscal *nf);
+NFError cliente_add_item(NotaFiscal *nf, Item *item);
+NotaFiscalResult cliente_procurar(List *lista_nfs, Stringo *cpf);
 
 #endif

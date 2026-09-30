@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-#include "errors.h"
+#include "returnables.h"
 
 typedef struct Node {
     void        *data;
@@ -19,12 +19,11 @@ typedef struct List {
     void (*destroy)(void *data);
 } List;
 
-
-ListError list_init(List *list, void (*destroy)(void *data));
-ListError list_destroy(List *list);
-ListError list_ins_next(List *list, Node *node, void *data);
-ListError list_ins_prev(List *list, Node *node, void *data);
-ListError list_remove(List *list, Node *node, void **data);
+NFError list_init(List *list, void (*destroy)(void *data));
+NFError list_destroy(List *list);
+NFError list_ins_next(List *list, Node *node, void *data);
+NFError list_ins_prev(List *list, Node *node, void *data);
+NFError list_remove(List *list, Node *node, void **data);
 
 static inline size_t list_size(List *list) {
     return list->size;
@@ -38,12 +37,12 @@ static inline Node *list_tail(List *list) {
     return list->tail;
 }
 
-static inline ListError list_is_head(Node *node) {
-    return node->next == NULL ? LE_OK : LE_GENERIC_FAIL;
+static inline NFError list_is_head(Node *node) {
+    return node->next == NULL ? NF_ERR_OK : NF_ERR_GENERIC_FAIL;
 }
 
-static inline ListError list_is_tail(Node *node) {
-    return node->prev == NULL ? LE_OK : LE_GENERIC_FAIL;
+static inline NFError list_is_tail(Node *node) {
+    return node->prev == NULL ? NF_ERR_OK : NF_ERR_GENERIC_FAIL;
 }
 
 static inline void *list_data(Node *node) {

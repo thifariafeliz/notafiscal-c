@@ -3,11 +3,11 @@
 #include <stddef.h>
 
 #include "../include/list.h"
-#include "../include/errors.h"
+#include "../include/returnables.h"
 
-ListError list_init(List* list, void (*destroy)(void *data)) {
+NFError list_init(List* list, void (*destroy)(void *data)) {
     if (list == NULL) {
-        return LE_ARG_IS_NULL;
+        return NF_ERR_INVALID_ARG;
     }
 
     list->size = 0;
@@ -15,39 +15,43 @@ ListError list_init(List* list, void (*destroy)(void *data)) {
     list->tail = NULL;
     list->destroy = destroy;
 
-    return LE_OK;
+    return NF_ERR_OK;
 }
 
-ListError list_destroy(List *list) {
+NFError list_destroy(List *list) {
     if (list == NULL) {
-        return LE_ARG_IS_NULL;
+        return NF_ERR_INVALID_ARG;
     }
 
     void *data;
 
     while (list_size(list) > 0) {
-        if (list_remove(list, list_tail(list), (void**)&data) == LE_OK && list->destroy != NULL) {
+        if (list_remove(list, list_tail(list), (void**)&data) == NF_ERR_OK && list->destroy != NULL) {
             list->destroy(data);
         }
     }
 
     memset(list, 0, sizeof(List));
 
-    return LE_OK;
+    return NF_ERR_OK;
 }
 
-ListError list_remove(List *list, Node *node, void **data) {
+NFError list_remove(List *list, Node *node, void **data) {
     if (list == NULL || node == NULL) {
-        return LE_ARG_IS_NULL;
+        return NF_ERR_INVALID_ARG;
     }
 
     if (list_size(list) == 0) {
-        return LE_SIZE_IS_ZERO;
+        return NF_ERR_SIZE_IS_ZERO;
+    }
+
+    if (list_head(list) == NULL) {
+        return NF_ERR_INVALID_ARG;
     }
 
     *data = node->data;
 
-    if (list_is_head(node) == LE_OK) {
+    if (list_is_head(node) == NF_ERR_OK) {
         list->head = node->next;
         // node->next->prev = NULL;
 
@@ -73,21 +77,21 @@ ListError list_remove(List *list, Node *node, void **data) {
 
     list->size--;
 
-    return LE_OK;
+    return NF_ERR_OK;
 }
 
-ListError list_ins_next(List *list, Node *node, void *data) {
+NFError list_ins_next(List *list, Node *node, void *data) {
     if (list == NULL) {
-        return LE_ARG_IS_NULL;
+        return NF_ERR_INVALID_ARG;
     }
 
     if (list_size(list) != 0 && node == NULL) {
-        return LE_GENERIC_FAIL;
+        return NF_ERR_GENERIC_FAIL;
     }
 
     Node *new_node = malloc(sizeof(*new_node));
     if (new_node == NULL) {
-        return LE_FAILED_MALLOC;
+        return NF_ERR_NO_MEMORY_AVAILABLE;
     }
 
     new_node->data = (void*) data;
@@ -114,19 +118,22 @@ ListError list_ins_next(List *list, Node *node, void *data) {
 
     list->size++;
 
-    return 0;
+    return NF_ERR_OK;
 }
 
-ListError list_ins_prev(List *list, Node *node, void *data) {
+NFError list_ins_prev(List *list, Node *node, void *data) {
     if (list == NULL) {
-        return LE_ARG_IS_NULL;
+        return NF_ERR_INVALID_ARG;
     }
 
     if (list_size(list) != 0 && node == NULL) {
-        return LE_GENERIC_FAIL;
+        return NF_ERR_GENERIC_FAIL;
     }
 
     Node *new_node = malloc(sizeof(*new_node));
+    if (new_node == NULL) {
+        return NF_ERR_NO_MEMORY_AVAILABLE;
+    }
 
     new_node->data = (void*) data;
 
@@ -152,5 +159,5 @@ ListError list_ins_prev(List *list, Node *node, void *data) {
 
     list->size++;
 
-    return LE_OK;
+    return NF_ERR_OK;
 }

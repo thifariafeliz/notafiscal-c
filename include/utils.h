@@ -1,12 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "errors.h"
-
-typedef struct IntParseResult {
-    int value;
-    ParseResult status;
-} IntParseResult;
+#include "returnables.h"
 
 IntParseResult parse_int(char *input);
 

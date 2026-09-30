@@ -5,11 +5,12 @@ INC_DIR = include
 OBJ_DIR = obj
 BLD_DIR = build
 
-SRCS = $(SRC_DIR)/main.c    \
-	$(SRC_DIR)/list.c       \
-	$(SRC_DIR)/utils.c      \
-	$(SRC_DIR)/stringo.c    \
-	$(SRC_DIR)/notafiscal.c \
+SRCS = $(SRC_DIR)/main.c         \
+	$(SRC_DIR)/list.c            \
+	$(SRC_DIR)/utils.c           \
+	$(SRC_DIR)/stringo.c         \
+	$(SRC_DIR)/notafiscal.c      \
+	$(SRC_DIR)/operacoes_item.c  \
 	$(SRC_DIR)/operacoes_clientes.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

@@ -31,7 +31,6 @@ typedef struct Caixa {
     List *notas_fiscais;  // List *notas_ficais receberá elementos do tipo NotaFiscal
 } Caixa;
 
-void nota_fiscal_destroy(void *data);
-void nf_item_destroy(DadosItem *item);
+void imprimir_notas_fiscais(Caixa *caixa);
 
 #endif

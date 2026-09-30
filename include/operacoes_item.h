@@ -10,6 +10,5 @@ typedef struct OpDadosItemResult {
 } OpDadosItemResult;
 
 OpDadosItemResult pega_dados_item();
-void dados_item_destroy(void *data);
 
 #endif

@@ -104,26 +104,3 @@ void stringo_destroy(Stringo *str) {
 
     return;
 }
-
-/// Esta função exige um ponteiro para um ponteiro, pois precisa mudar o endereco
-/// para o qual o ponteiro str está apontando.
-StringoError ler_campo(char *prompt, Stringo **str) {
-    if (prompt == NULL) {
-        return SE_ARG_IS_NULL;
-    }
-
-    if (str != NULL) {
-        stringo_destroy(*str);
-    }
-
-    printf("%s\n", prompt);
-    StringoReturnResult input = stringo_get_input();
-
-    if (input.status != SE_OK) {
-        printf("Não foi possível pegar entrada do usuário.\n");
-        return input.status;
-    }
-
-    *str = input.string;
-    return SE_OK;
-}

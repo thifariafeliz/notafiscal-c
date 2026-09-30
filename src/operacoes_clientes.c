@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 
 #include "../include/list.h"
 #include "../include/stringo.h"
+#include "../include/operacoes_item.h"
 #include "../include/operacoes_clientes.h"
 
 int imprimir_clientes(Caixa *caixa) {
@@ -35,32 +37,6 @@ int imprimir_clientes(Caixa *caixa) {
     printf("\n");
 
     return 0;
-}
-
-void dados_cliente_destroy(void *data) {
-    DadosCliente *cliente = (DadosCliente*) data;
-
-    if (cliente == NULL) {
-        return;
-    }
-
-    if (cliente->nome != NULL) {
-        stringo_destroy(cliente->nome);
-    }
-
-    if (cliente->cpf != NULL) {
-        stringo_destroy(cliente->cpf);
-    }
-
-    if (cliente->fone != NULL) {
-        stringo_destroy(cliente->fone);
-    }
-
-    if (cliente->endereco != NULL) {
-        stringo_destroy(cliente->endereco);
-    }
-
-    free(cliente);
 }
 
 DadosClienteResult pega_dados_cliente(void) {
@@ -96,50 +72,51 @@ DadosClienteResult pega_dados_cliente(void) {
     return (DadosClienteResult){.cliente = cliente, .status = SE_OK};
 }
 
+AddItemClienteResult adicionar_item_cliente(Caixa *caixa) {
+    StringoReturnResult cpf_cliente = stringo_initialize();
+    StringoError cpf_result = ler_campo("Insira o CPF do cliente desejado: ", &cpf_cliente.string);
 
+    if (cpf_result != SE_OK) {
+        return (AddItemClienteResult){.result_b = cpf_result, .result_a = 0, .result_c = 0, .error_type = 2};
+    }
 
-/*
-  • A redução com menor trade-off seria manter a sequência explícita e
-   extrair apenas as responsabilidades repetidas em src/
-   operacoesClientes.c:40:
+    NotaFiscal *cliente = procura_cliente(caixa, cpf_cliente.string);
 
-   - Crie uma função auxiliar ler_campo(prompt, destino) que:
-       - exiba o prompt;
-       - chame stringo_get_input();
-       - trate/imprima o erro;
-       - devolva somente o StringoError.
+    if (cliente == NULL) {
+        return (AddItemClienteResult){.result_b = 0, .result_a = 0, .result_c = 0, .error_type = 4};
+    }
 
-   - Crie stringo_destroy() e dados_cliente_destroy(). Assim, todo
-     erro usa uma única rotina de limpeza, eliminando o grau e o
-     grande switch final.
+    OpDadosItemResult item_result = pega_dados_item();
 
-   - Aloque cliente com calloc. Os campos começam como NULL,
-     permitindo que dados_cliente_destroy() libere somente o que já
-     foi preenchido.
+    if (item_result.status != DI_OK) {
+        return (AddItemClienteResult){.result_a = item_result.status, .result_b = 0, .result_c = 0, .error_type = 1};
+    }
 
-   - Atribua cada resultado diretamente ao respectivo campo após a
-     leitura bem-sucedida. Atualmente as atribuições só acontecem no
-     final, mas o bloco de erro tenta acessar cliente->nome,
-     cliente->cpf etc. ainda não inicializados.
+    ListError list_ins_result = list_ins_next(cliente->item, cliente->item->tail, item_result.item);
+    if (list_ins_result != LE_OK) {
+        printf("Não foi possível inserir o item na nota fiscal do cliente.\n");
+        return (AddItemClienteResult){.error_type = 3, .result_c = list_ins_result, .result_a = 0, .result_b = 0};
+    }
 
-   - Preserve o erro original no retorno. Hoje qualquer falha acaba
-     retornando SE_FAILED_MALLOC, mesmo quando ocorreu SE_EARLY_EOF
-     ou outro erro.
+    printf("O item foi inserido na nota fiscal do cliente.\n");
 
-   - Evite inicialmente transformar tudo em vetor de prompts e
-     ponteiros. Isso diminuiria mais linhas, mas adicionaria
-     indireção e dificultaria um pouco a leitura. Depois dos helpers,
-     a função já ficará pequena e linear.
+    return (AddItemClienteResult){.result_a = 0, .result_b = 0, .result_c = 0, .error_type = 0};
+}
 
-   - Corrija também o switch de limpeza: o case 3 cai no case 4,
-     podendo causar liberações duplicadas, e alguns caminhos chegam
-     ao fim da função sem return.
+NotaFiscal *procura_cliente(Caixa *caixa, Stringo *cpf) {
+    NotaFiscal *nota = NULL;
 
-   - Como ajuste pequeno, declare a função como
-     pega_dados_cliente(void) em vez de pega_dados_cliente() e
-     corrija "telefneo" para "telefone".
+    List *lista_notas_fiscais = caixa->notas_fiscais;
+    Node *node = lista_notas_fiscais->head;
 
-   O formato final ideal seria: alocar → ler quatro campos com quatro
-   verificações simples → retornar sucesso; em qualquer erro, chamar
-   uma única função de destruição e retornar o status recebido.
- */
+    for (size_t i = 0; i < lista_notas_fiscais->size; i++) {
+        NotaFiscal *nf = node->data;
+
+        if (strcmp(nf->cliente->cpf->data, cpf->data) == 0) {
+            nota = nf;
+            break;
+        }
+    }
+
+    return nota;
+}

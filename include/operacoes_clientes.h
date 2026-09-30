@@ -11,6 +11,7 @@ typedef struct DadosClienteResult {
 
 int imprimir_clientes(Caixa *caixa);
 DadosClienteResult pega_dados_cliente(void);
-void dados_cliente_destroy(void *data);
+AddItemClienteResult adicionar_item_cliente(Caixa *caixa);
+NotaFiscal *procura_cliente(Caixa *caixa, Stringo *cpf);
 
 #endif

@@ -22,12 +22,12 @@ int main(void) {
     }
 
     // list_init(caixa->notas_fiscais, nota_fiscal_destroy);
-    list_init(caixa->notas_fiscais, dados_cliente_destroy);
+    list_init(caixa->notas_fiscais, nota_fiscal_destroy);
 
     while (1) {
         printf("Escolha o que fazer:\n");
         printf("1. Ver clientes\n2. Adicionar Cliente\n3. Imprimir notas fiscais de um cliente\n\
-4. Adicionar nota fiscal a um cliente\n5. Remover Cliente\n0. Sair\n: ");
+4. Adicionar item a uma nota fiscal\n5. Remover Cliente\n0. Sair\n: ");
 
         IntParseResult opcao;
 
@@ -63,27 +63,28 @@ int main(void) {
 
             case 1:
                 printf("\n");
-                int print_result = imprimir_clientes(caixa);
-
-                switch (print_result) {
-                    case 0:
-                        break;
-                    case -1:
-                        printf("Falha lógica. Caixa é nulo.\n");
-                        goto clearall;
-                    case -2:
-                        printf("Não foi possível imprimir a lista, pois seu tamanho é zero.\n");
-                        continue;
-                    case -3:
-                        printf("Falha lógica. Primeiro item da lista é nulo.\n");
-                        goto clearall;
-                }
+                imprimir_notas_fiscais(caixa);
 
                 printf("\nTodos os clientes foram impressos.\n\n");
                 break;
 
             case 2:
                 printf("\n");
+
+                List *lista_de_itens = malloc(sizeof(*lista_de_itens));
+                if (lista_de_itens == NULL) {
+                    printf("Erro: não foi possível alocar espaço para lista de itens.\nl");
+                    goto clearall;
+                }
+
+                list_init(lista_de_itens, dados_item_destroy);
+
+                NotaFiscal *notinha = malloc(sizeof(*notinha));
+                if (notinha == NULL) {
+                    printf("Não há mais espaço para notas fiscais. O programa será encerrado.\n");
+                    goto clearall;
+                }
+
                 DadosClienteResult cliente_result = pega_dados_cliente();
                 switch (cliente_result.status) {
                     case SE_OK:
@@ -103,40 +104,59 @@ int main(void) {
                         goto clearall;
                 }
 
-                OpDadosItemResult item_result = pega_dados_item();
+                notinha->cliente = cliente_result.cliente;
+                notinha->item = lista_de_itens;
 
-                switch (item_result.status) {
-                    case DI_OK:
-                        break;
-                    case DI_STRINGO_ERROR:
-                        printf("Ocorreu um erro ao pegar entrada de usuário.\n");
-                        goto clearall;
-                        case DI_FAILED_MALLOC:
-                        printf("Não foi possível alocar espaço para dados do item.\nO programa será encerrado.\n");
-                        goto clearall;
-                    case DI_INT_ERROR:
-                        printf("Erro ao pegar entrada de usuário. Falha lógica.\n");
-                        goto clearall;
-                    default:
-                        printf("Erro ao pegar entrada de usuário. Falha lógica desconhecida.\n");
-                        goto clearall;
+
+
+                if (list_ins_next(caixa->notas_fiscais, caixa->notas_fiscais->tail, notinha) != 0) {
+                    printf("Não foi possível inserir nota fiscal na lista do caixa.\n");
+                    goto clearall;
                 }
+                printf("A nota fiscal foi inserida na lista do caixa.\n");
+                continue;
 
-                // switch (list_ins_prev(caixa->notas_fiscais, caixa->notas_fiscais->head, (void*)result.cliente))
-                // {
-                //     case LE_OK:
-                //         printf("Dados adicionados com sucesso à lista de notas fiscais.\n");
-                //         break;
-                //     case LE_ARG_IS_NULL:
-                //         printf("Erro ao adicionar dados do cliente à lista. Falha lógica.\nO programa será encerrado.\n");
-                //         goto clearall;
-                //     case LE_FAILED_MALLOC:
-                //         printf("Não há espaço para adicionar dados à lista.\nO programa será encerrado.\n");
-                //         goto clearall;
-                //     default:
-                //         printf("Erro desconhecido ao adicionar dados à lista.\nO programa será encerrado.\n");
-                //         goto clearall;
-                // }
+            case 3:
+            printf("\n");
+            StringoReturnResult cpf = stringo_initialize();
+            StringoError result = ler_campo("Insira o cpf do cliente: ", &cpf.string);
+
+            switch (result) {
+                case SE_OK:
+                    break;
+                case SE_EARLY_EOF:
+                    printf("Erro ao pegar entrada de usuário. Early EOF. Tente novamente.\n");
+                    buffer_flush();
+                    continue;
+                case SE_FAILED_MALLOC:
+                    printf("Não foi possível alocar memória para entrada de usuário.\n");
+                    goto clearall;
+                case SE_ARG_IS_NULL:
+                    printf("Erro de falha lógica. O programa será encerrado.\n");
+                case SE_GENERIC_FAIL:
+                    printf("Erro de lógica desconhecido. O programa será encerrado.\n");
+            }
+
+            AddItemClienteResult add_result = adicionar_item_cliente(caixa);
+
+            switch (add_result.error_type) {
+                case 0:
+                    break;
+                case 4:
+                    printf("Falha ao encontrar cliente. Tente novamente.\n");
+                    continue;
+                case 1:
+                    printf("Falha lógica grave. Argumento para função era nulo. O programa será encerrado.\n");
+                    goto clearall;
+
+                case DC_GENERIC_FAIL:
+                    printf("Falha lógica grave desconhecida. O programa será encerrado.\n");
+                    goto clearall;
+            }
+
+            printf("O item foi adicionado com sucesso ao cliente.\n");
+
+            continue;
         }
     }
 

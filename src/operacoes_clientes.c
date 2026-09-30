@@ -5,7 +5,6 @@
 
 #include "../include/list.h"
 #include "../include/stringo.h"
-#include "../include/operacoes_item.h"
 #include "../include/operacoes_clientes.h"
 
 // This receives a single NotaFiscal and prints the Cliente information

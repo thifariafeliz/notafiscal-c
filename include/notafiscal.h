@@ -4,8 +4,7 @@
 #include <stddef.h>
 
 #include "stringo.h"
-
-typedef struct List List;
+#include "list.h"
 
 typedef struct Cliente {
     Stringo *nome;

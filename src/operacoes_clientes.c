@@ -147,6 +147,7 @@ ClienteResult cliente_pegar_dados(void) {
     return (ClienteResult){.value = cliente, .status = NF_ERR_OK};
 }
 
+// This is the destructor function to the Cliente struct
 void cliente_destroy(void *data) {
     if (data == NULL) {
         return;

@@ -1,15 +1,14 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 #include <limits.h>
 
 #include "../include/utils.h"
-#include "../include/errors.h"
+#include "../include/returnables.h"
 
 IntParseResult parse_int(char *input) {
     if (input == NULL) {
-        return (IntParseResult){.value = -1, .status = PARSE_ARG_IS_NULL};
+        return (IntParseResult){.value = -1, .status = NF_ERR_INVALID_ARG};
     }
 
     errno = 0;
@@ -17,16 +16,16 @@ IntParseResult parse_int(char *input) {
     long int number = strtol(input, &end, 10);
 
     if (end == input) {
-        return (IntParseResult){.value = -1, .status = PARSE_EMPTY};
+        return (IntParseResult){.value = -1, .status = NF_ERR_INVALID_INPUT};
     }
 
     if (*end != '\n' && *end != '\0') {
-        return (IntParseResult){.value = -1, .status = PARSE_INVALID};
+        return (IntParseResult){.value = -1, .status = NF_ERR_INVALID_INPUT};
     }
 
     if (errno == ERANGE || number < INT_MIN || number > INT_MAX) {
-        return (IntParseResult){.value = -1, .status = PARSE_OVERFLOW};
+        return (IntParseResult){.value = -1, .status = NF_ERR_OVERFLOW};
     }
 
-    return (IntParseResult){.value = (int) number, .status = PARSE_OK};
+    return (IntParseResult){.value = (int) number, .status = NF_ERR_OK};
 }

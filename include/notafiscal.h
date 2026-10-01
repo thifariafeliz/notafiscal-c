@@ -27,4 +27,7 @@ typedef struct NotaFiscal {
     Cliente *cliente;
 } NotaFiscal;
 
+
+NFError imprimir_notas_fiscais(List *lista_nfs);
+
 #endif

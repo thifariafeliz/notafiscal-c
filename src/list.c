@@ -95,6 +95,7 @@ NFError list_ins_next(List *list, Node *node, void *data) {
     }
 
     new_node->data = (void*) data;
+    new_node->list = list;
 
     if (list_size(list) == 0) {
         list->head = new_node;
@@ -136,6 +137,7 @@ NFError list_ins_prev(List *list, Node *node, void *data) {
     }
 
     new_node->data = (void*) data;
+    new_node->list = list;
 
     if (list_size(list) == 0) {
         list->head = new_node;

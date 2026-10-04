@@ -39,11 +39,11 @@ static inline Node *list_tail(List *list) {
 }
 
 static inline NFError list_is_head(Node *node) {
-    return node->next == NULL ? NF_ERR_OK : NF_ERR_GENERIC_FAIL;
+    return node->prev == NULL ? NF_ERR_OK : NF_ERR_GENERIC_FAIL;
 }
 
 static inline NFError list_is_tail(Node *node) {
-    return node->prev == NULL ? NF_ERR_OK : NF_ERR_GENERIC_FAIL;
+    return node->next == NULL ? NF_ERR_OK : NF_ERR_GENERIC_FAIL;
 }
 
 static inline void *list_data(Node *node) {

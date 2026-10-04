@@ -100,7 +100,6 @@ void stringo_destroy(Stringo *str) {
     str->data = NULL;
 
     free(str);
-    str = NULL;
 
     return;
 }

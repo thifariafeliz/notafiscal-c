@@ -28,6 +28,7 @@ typedef struct NotaFiscal {
 } NotaFiscal;
 
 
+void nfs_destroy(void *data);
 NFError imprimir_notas_fiscais(List *lista_nfs);
 
 #endif

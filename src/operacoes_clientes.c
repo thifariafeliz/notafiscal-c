@@ -61,6 +61,8 @@ NotaFiscalResult cliente_procurar(List *lista_nfs, Stringo *cpf) {
         if (strcmp(cliente->cpf->data, cpf->data) == 0) {
             return (NotaFiscalResult){.value = nf, .status = NF_ERR_OK};
         }
+
+        node_nf = node_nf->next;
     }
 
     return (NotaFiscalResult){.value = NULL, .status = NF_ERR_GENERIC_FAIL};
@@ -73,7 +75,7 @@ NFError cliente_add_item(NotaFiscal *nf, Item *item) {
         return NF_ERR_INVALID_ARG;
     }
 
-    if (nf->itens->head == NULL || nf->itens->tail == NULL) {
+    if ((nf->itens->head == NULL || nf->itens->tail == NULL) && nf->itens->size != 0) {
         return NF_ERR_INVALID_ARG;
     }
 

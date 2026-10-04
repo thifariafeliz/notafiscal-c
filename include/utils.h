@@ -4,5 +4,6 @@
 #include "returnables.h"
 
 IntParseResult parse_int(char *input);
+NFError pega_int(int *ret);
 
 #endif
